@@ -2,7 +2,13 @@
  * Dependency Injection Container Implementation
  * 
  * This file implements the Dependency Injection (DI) pattern, which is one of the
- * most powerful patterns for building maintainable, testable applications.
+ * most powerful patterns, easily in my top 3 for building maintainable, testable applications.
+ * 
+ * Every time you pick up a new language, the first thing I do is figure out how it manages dependencies.
+ * If the language doesn't have a built-in feature there may be a good reason...or maybe it just sucks.
+ * Either way, it's a good way to get a feel for the language. Applying patterns that you've already mastered
+ * is like some cheat code that you get as a reward for spending so much time screwing around with the language.
+ * 
  * 
  * WHAT IS DEPENDENCY INJECTION?
  * Instead of components creating their dependencies directly, dependencies are

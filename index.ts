@@ -69,7 +69,7 @@ import { FifoEventCollector } from './services/event-collector';
 // Import commands - these implement the Command Pattern
 // Each command encapsulates a business operation
 import { MatchStoreToProductCommand } from './commands/match-store-command';
-import { AssignRepCommand } from './commands/assign-rep-command';
+import { AssignRepCommand } from './commands/rep-check-in-command';
 
 // Import hooks - these implement the Decorator Pattern
 // Hooks add cross-cutting concerns to commands without modifying them

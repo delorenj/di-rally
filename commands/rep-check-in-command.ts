@@ -36,7 +36,7 @@ import { TransactionCommand, TransactionEvent, CommandContext } from '../core/ty
  * (MatchStoreToProductCommand). This is an example of the Event-Driven Architecture
  * pattern, where commands produce events that trigger other commands.
  */
-export class RepCheckIn implements TransactionCommand {
+export class AssignRepCommand implements TransactionCommand {
   /** Unique identifier for this command instance */
   commandId = 'rep-check-in-' + Math.random().toString(36).substring(2, 9);
   

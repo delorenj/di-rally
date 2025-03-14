@@ -241,6 +241,134 @@ test('MatchStoreToProductCommand', () => {
 // Side effects make tests unpredictable
 ```
 
+## Visual Comparison of Approaches
+
+### Pattern-Based Approach Architecture
+
+```mermaid
+graph TD
+    A[Event] -->|Received by| B[Transaction Manager]
+    B -->|Builds command via| C[Command Builder]
+    C -->|Creates| D[Command Object]
+    D -->|Has| E[Pre-Invoke Hooks]
+    D -->|Has| F[Core Business Logic]
+    D -->|Has| G[Post-Invoke Hooks]
+    
+    E -->|Includes| E1[Logging]
+    E -->|Includes| E2[Validation]
+    E -->|Includes| E3[Authorization]
+    
+    G -->|Includes| G1[Metrics]
+    G -->|Includes| G2[Analytics]
+    
+    F -->|Produces| H[Side Effects]
+    H -->|Collected by| I[Event Collector]
+    
+    classDef infrastructure fill:#f9f,stroke:#333,stroke-width:1px;
+    classDef business fill:#bfb,stroke:#333,stroke-width:1px;
+    classDef hooks fill:#bbf,stroke:#333,stroke-width:1px;
+    
+    class A,B,C,I infrastructure;
+    class F,H business;
+    class D,E,G,E1,E2,E3,G1,G2 hooks;
+```
+
+**Key Characteristics:**
+- Clear separation between business logic and infrastructure concerns
+- Hooks handle cross-cutting concerns
+- Components interact through well-defined interfaces
+- Side effects are explicitly collected
+
+### No-Pattern Approach Architecture
+
+```mermaid
+graph TD
+    A[Event] -->|Directly triggers| B[Process Event Function]
+    
+    subgraph "Process Event Function (Everything Mixed Together)"
+        B -->|Contains| C[Logging Logic]
+        B -->|Contains| D[Validation Logic]
+        B -->|Contains| E[Authorization Logic]
+        B -->|Contains| F[Business Logic]
+        B -->|Contains| G[Metrics Logic]
+        B -->|Contains| H[Analytics Logic]
+        B -->|Contains| I[Error Handling]
+    end
+    
+    B -->|Directly calls| J[Another Process Function]
+    B -->|Modifies| K[Global State]
+    
+    classDef mixed fill:#fbb,stroke:#333,stroke-width:2px;
+    classDef external fill:#bbf,stroke:#333,stroke-width:1px;
+    
+    class B,C,D,E,F,G,H,I mixed;
+    class A,J,K external;
+```
+
+**Key Characteristics:**
+- All concerns mixed together in large functions
+- Direct dependencies between components
+- Shared global state
+- Duplicated logic across functions
+- Direct function calls create tight coupling
+
+## Code Structure Comparison
+
+### Pattern-Based Code Structure
+
+```mermaid
+graph TD
+    A[index.ts] -->|Uses| B[core/]
+    A -->|Uses| C[commands/]
+    A -->|Uses| D[services/]
+    A -->|Uses| E[hooks/]
+    
+    B -->|Contains| B1[di-container.ts]
+    B -->|Contains| B2[command-builder.ts]
+    B -->|Contains| B3[transaction-manager.ts]
+    B -->|Contains| B4[types.ts]
+    
+    C -->|Contains| C1[Command Classes]
+    D -->|Contains| D1[Service Implementations]
+    E -->|Contains| E1[Hook Functions]
+    
+    classDef core fill:#f9f,stroke:#333,stroke-width:1px;
+    classDef component fill:#bbf,stroke:#333,stroke-width:1px;
+    classDef entry fill:#bfb,stroke:#333,stroke-width:1px;
+    
+    class A entry;
+    class B,B1,B2,B3,B4 core;
+    class C,D,E,C1,D1,E1 component;
+```
+
+**Benefits:**
+- Organized by responsibility
+- Each file has a single purpose
+- Clear dependencies between modules
+- Modular structure allows parallel development
+
+### No-Pattern Code Structure
+
+```mermaid
+graph TD
+    A[index.ts] -->|Contains| B[Global Functions]
+    A -->|Contains| C[Event Handlers]
+    A -->|Contains| D[Global Variables]
+    
+    classDef monolith fill:#fbb,stroke:#333,stroke-width:2px;
+    
+    class A,B,C,D monolith;
+```
+
+**Benefits:**
+- Simpler file structure
+- Everything in one place
+
+**Drawbacks:**
+- Difficult to navigate as code grows
+- Hard to understand what affects what
+- No clear separation of concerns
+
 ## Summary
 
 | Aspect | Pattern-Based | No-Pattern |

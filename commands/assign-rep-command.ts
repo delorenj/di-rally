@@ -6,7 +6,7 @@ import { TransactionCommand, TransactionEvent, CommandContext } from '../core/ty
 export class AssignRepCommand implements TransactionCommand {
   commandId = 'assign-rep-' + Math.random().toString(36).substring(2, 9);
   
-  constructor(private event: TransactionEvent<{matchId: string, storeId: string}>) {}
+  constructor(private event: TransactionEvent<{matchId: string, storeId: string, potentialRevenue?: number}>) {}
   
   async invoke(context: CommandContext): Promise<void> {
     console.log(`👨‍💼 Finding a rep for match ${this.event.payload.matchId}`);

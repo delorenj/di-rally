@@ -144,7 +144,7 @@ export function createAIPredictionHook(): PreInvokeHook {
       const storeId = context.event.payload.storeId;
       
       // Generate "AI" predictions for each product
-      const enhancedProducts = products.map(product => {
+      const enhancedProducts = products.map((product: any) => {
         // Calculate a match score between 0-100
         const baseScore = Math.floor(Math.random() * 60) + 40; // 40-100 range for demo
         const volatility = Math.floor(Math.random() * 10) - 5; // +/- 5 points variation

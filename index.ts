@@ -69,7 +69,7 @@ import { FifoEventCollector } from './services/event-collector';
 // Import commands - these implement the Command Pattern
 // Each command encapsulates a business operation
 import { MatchStoreToProductCommand } from './commands/match-store-command';
-import { AssignRepCommand } from './commands/rep-check-in-command';
+import { RepCheckIn } from './commands/rep-check-in-command';
 
 // Import hooks - these implement the Decorator Pattern
 // Hooks add cross-cutting concerns to commands without modifying them
@@ -185,7 +185,7 @@ async function runRepRallyDemo() {
       // Factory for STORE_MATCHED events
       // Notice how different event types can map to different command classes
       builder.registerCommandFactory('STORE_MATCHED', 
-        (event) => new AssignRepCommand(event));
+        (event) => new RepCheckIn(event));
       
       return builder;
     },
